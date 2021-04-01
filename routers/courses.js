@@ -92,6 +92,14 @@ router.delete('/id/:id', async (req,res) =>{
     res.send(course)
 })
 
+// get return courses that contains a  given tag
+router.get('/tag/:tag1/:tag2?', async (req,res) =>{
 
+    var courses = await Course.find({tags : {$all : [req.params.tag1,req.params.tag2]}});
+
+if(!courses)
+    return res.status(404).send('There are no courses between the given two prices');
+res.send(courses)
+});
 
 module.exports = router;

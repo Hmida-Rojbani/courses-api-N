@@ -50,4 +50,34 @@ if(!courses)
 res.send(courses)
 });
 
+// update Course 
+
+router.put('/id/:id', async (req,res) =>{
+    try {
+        var course = await Course.findById(req.params.id);
+    } catch (error) {
+        return res.status(400).send('Unaccepted Id');
+    }
+    if(!course)
+        return res.status(404).send('Course with this id is not found');
+    // update
+    course = _.merge(course,req.body);
+    await course.save();
+    res.send(course)
+})
+// delete  course
+router.delete('/id/:id', async (req,res) =>{
+    try {
+        var course = await Course.findByIdAndDelete(req.params.id);
+    } catch (error) {
+        return res.status(400).send('Unaccepted Id');
+    }
+    if(!course)
+        return res.status(404).send('Course with this id is not found');
+
+    res.send(course)
+})
+
+
+
 module.exports = router;

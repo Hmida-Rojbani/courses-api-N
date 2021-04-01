@@ -10,7 +10,11 @@ router.get('', async (req,res) =>{
 
 router.post('', async (req,res) =>{
     let course = new Course(_.pick(req.body,['title','author','tags','price','isPublished']));
-    await course.save();
+    try {
+        await course.save();
+    } catch (error) {
+        res.status(400).send('Storage problem in DB : '+ error.message)
+    }
     res.status(201).send(course)
 })
 // by Id
@@ -62,7 +66,11 @@ router.put('/id/:id', async (req,res) =>{
         return res.status(404).send('Course with this id is not found');
     // update
     course = _.merge(course,req.body);
-    await course.save();
+    try {
+        await course.save();
+    } catch (error) {
+        res.status(400).send('Storage problem in DB : '+ error.message)
+    }
     res.send(course)
 })
 // delete  course
